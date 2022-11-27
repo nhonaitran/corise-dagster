@@ -1,6 +1,7 @@
 venv_corise_dagster
 course_assets/
 postgres-dagster
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
