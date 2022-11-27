@@ -66,7 +66,6 @@ def process_data(context, stocks: list[Stock]) -> Aggregation:
 
 
 @op(
-    config_schema={"server": str},
     tags={"kind": "redis"},
 )
 def put_redis_data(context, aggregation: Aggregation) -> Nothing:
