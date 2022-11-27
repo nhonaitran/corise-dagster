@@ -58,15 +58,19 @@ def get_s3_data(context):
     return output
 
 
-@op
-def process_data(context, stocks: list) -> Aggregation:
+@op(out={"aggregation": Out(dagster_type=Aggregation)},)
+def process_data(context, stocks: list[Stock]) -> Aggregation:
     """Given a list of stocks return the Aggregation of the greatest stock high"""
     stock_greatest_high: Stock = max(stocks, key=lambda x: x.high)
     return Aggregation(date=stock_greatest_high.date, high=stock_greatest_high.high)
 
 
-@op
-def put_redis_data(context, stock_greatest_high: Aggregation):
+@op(
+    config_schema={"server": str},
+    tags={"kind": "redis"},
+)
+def put_redis_data(context, aggregation: Aggregation) -> Nothing:
+    """Upload an Aggregation to Redis"""
     pass
 
 
