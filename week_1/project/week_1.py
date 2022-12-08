@@ -44,24 +44,20 @@ def csv_helper(file_name: str) -> Iterator[Stock]:
 @op(
     config_schema={"s3_key": str},
     out={"stocks": Out(dagster_type=List[Stock])},
-    tags={"kind": "s3"},
-    description="Get a list of stocks from an S3 file",
+    tags={"kind": "s3"}
 )
 def get_s3_data(context):
     """Get a list of stocks from an S3 file"""
-    output = list()
-    with open(context.op_config["s3_key"]) as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            stock = Stock.from_list(row)
-            output.append(stock)
-    return output
+    return list(csv_helper(context.op_config["s3_key"]))
 
 
-@op(out={"aggregation": Out(dagster_type=Aggregation)},)
+@op(
+    out={"aggregation": Out(dagster_type=Aggregation)},
+)
 def process_data(context, stocks: list[Stock]) -> Aggregation:
     """Given a list of stocks return the Aggregation of the greatest stock high"""
     stock_greatest_high: Stock = max(stocks, key=lambda x: x.high)
+    context.log.debug(stock_greatest_high)
     return Aggregation(date=stock_greatest_high.date, high=stock_greatest_high.high)
 
 
