@@ -76,12 +76,7 @@ class Redis:
 )
 def postgres_resource(context) -> Postgres:
     """This resource defines a Postgres client"""
-    return Postgres(
-        host=context.resource_config["host"],
-        user=context.resource_config["user"],
-        password=context.resource_config["password"],
-        database=context.resource_config["database"],
-    )
+    return Postgres(**context.resource_config)
 
 
 @resource
@@ -121,7 +116,4 @@ def s3_resource(context) -> S3:
 )
 def redis_resource(context) -> Redis:
     """This resource defines a Redis client"""
-    return Redis(
-        host=context.resource_config["host"],
-        port=context.resource_config["port"],
-    )
+    return Redis(**context.resource_config)

@@ -21,7 +21,7 @@ def get_s3_data(context) -> List[Stock]:
     ins={"stocks": In(dagster_type=List[Stock], description="A list of stocks")},
     out={"aggregation": Out(dagster_type=Aggregation, description="Aggregation of stock data")},
 )
-def process_data(context, stocks: list[Stock]) -> Aggregation:
+def process_data(context, stocks: List[Stock]) -> Aggregation:
     """Given a list of stocks return the Aggregation of the greatest stock high"""
     stock_greatest_high: Stock = max(stocks, key=lambda x: x.high)
     context.log.debug(stock_greatest_high)

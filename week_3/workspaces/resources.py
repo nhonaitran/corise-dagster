@@ -80,12 +80,7 @@ class Redis:
 )
 def postgres_resource(context) -> Postgres:
     """This resource defines a Postgres client"""
-    return Postgres(
-        host=context.resource_config["host"],
-        user=context.resource_config["user"],
-        password=context.resource_config["password"],
-        database=context.resource_config["database"],
-    )
+    return Postgres(**context.resource_config)
 
 
 @resource
@@ -113,12 +108,7 @@ def mock_s3_resource(context):
 )
 def s3_resource(context) -> S3:
     """This resource defines a S3 client"""
-    return S3(
-        bucket=context.resource_config["bucket"],
-        access_key=context.resource_config["access_key"],
-        secret_key=context.resource_config["secret_key"],
-        endpoint_url=context.resource_config["endpoint_url"],
-    )
+    return S3(**context.resource_config)
 
 
 @resource(
@@ -130,7 +120,4 @@ def s3_resource(context) -> S3:
 )
 def redis_resource(context) -> Redis:
     """This resource defines a Redis client"""
-    return Redis(
-        host=context.resource_config["host"],
-        port=context.resource_config["port"],
-    )
+    return Redis(**context.resource_config)
